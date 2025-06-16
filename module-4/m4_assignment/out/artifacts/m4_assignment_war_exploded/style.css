@@ -1,0 +1,52 @@
+/*
+    Author: Colton Kohler
+    Date: 06/15/2025
+    Assignment: Module 4 – JSP Styling
+    Purpose: Apply basic layout and styling to JSP table displaying JavaBean travel memory data
+*/
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f9fb;
+    margin: 20px;
+    padding: 20px;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    color: #2b3e50;
+}
+
+h2 {
+    margin-top: 40px;
+    color: #4a4a4a;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    border: 1px solid #cccccc;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #e0e7ef;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table {
+    table-layout: fixed;
+}
+
+td, th {
+    word-wrap: break-word;
+}
