@@ -1,48 +1,58 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.List" %>
 <%@ page import="com.colton.beans.MovieBean" %>
+<%@ page import="java.util.List" %>
 <%@ page import="com.colton.beans.MovieDetails" %>
-
-<%--
-    index.jsp
-    Author: Colton Kohler
-    Date: June 22, 2025
-    Assignment: Module 6 - JSP JavaBean Movie App
-
-    Description:
-    This JSP page displays a dropdown menu populated with movie titles from a MySQL database.
-    Users can select a movie and submit the form to view its full details on result.jsp.
---%>
-
 <%
-    // Create an instance of the JavaBean
     MovieBean bean = new MovieBean();
-
-    // Retrieve the list of movies (ID and title only)
     List<MovieDetails> movies = bean.getAllMovies();
 %>
-
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Select a Movie</title>
+    <title>Movie List</title>
 </head>
 <body>
-<h1>Select a Movie</h1>
-<p>Choose a movie title from the list below to view its details.</p>
+<h1>Movie List</h1>
 
-<!-- Form to submit selected movie ID -->
+<p>
+    <a href="addMovie.jsp">Add a New Movie</a> |
+    <a href="updateSelect.jsp">Update Existing Movie</a>
+</p>
+
+<p>Choose a movie title from the list below to view its details.</p>
 <form action="result.jsp" method="post">
     <label for="movieId">Movie Title:</label>
-    <select name="movieId" id="movieId">
-        <%-- Loop through movies and generate dropdown options --%>
+    <select name="movieId" id="movieId" required>
         <% for (MovieDetails movie : movies) { %>
         <option value="<%= movie.getId() %>"><%= movie.getTitle() %></option>
         <% } %>
     </select>
-    <br><br>
     <input type="submit" value="View Details">
 </form>
+
+<h2>All Movies</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Genre</th>
+        <th>Release Year</th>
+        <th>Rating</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% for (MovieDetails movie : movies) { %>
+    <tr>
+        <td><%= movie.getId() %></td>
+        <td><%= movie.getTitle() %></td>
+        <td><%= movie.getGenre() %></td>
+        <td><%= movie.getReleaseYear() %></td>
+        <td><%= movie.getRating() %></td>
+    </tr>
+    <% } %>
+    </tbody>
+</table>
 </body>
 </html>
+

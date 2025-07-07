@@ -5,8 +5,8 @@
 <%--
     result.jsp
     Author: Colton Kohler
-    Date: June 22, 2025
-    Assignment: Module 6 - JSP JavaBean Movie App
+    Date: July 6, 2025
+    Assignment: Module 8
 
     Description:
     This JSP receives a movie ID from the form in index.jsp, fetches the movie details from the bean,

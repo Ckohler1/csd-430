@@ -2,10 +2,11 @@
  * MovieBean.java
  * Author: Colton Kohler
  * Date: June 22, 2025
- * Assignment: Module 6 - JSP JavaBean Movie App
+ * Assignment: Module 8 - JSP JavaBean Movie App
  *
  * This JavaBean class provides methods to connect to a MySQL database,
- * retrieve a list of movies, and retrieve full details for a specific movie.
+ * retrieve a list of movies, retrieve full details for a specific movie,
+ * insert new records, and update existing records.
  */
 package com.colton.beans;
 
@@ -23,13 +24,14 @@ public class MovieBean {
     private Connection getConnection() throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3307/CSD430", "root", "SugHei297A!");
+                "jdbc:mysql://localhost:3307/CSD430", "root", "SugHei297A!"
+        );
     }
 
     /**
      * Retrieves full movie details by movie ID.
      * @param id the ID of the movie to retrieve
-     * @return MovieDetails object with full info
+     * @return MovieDetails object
      */
     public MovieDetails getMovieById(int id) {
         MovieDetails movie = new MovieDetails();
@@ -58,18 +60,62 @@ public class MovieBean {
     public List<MovieDetails> getAllMovies() {
         List<MovieDetails> movies = new ArrayList<>();
         try (Connection conn = getConnection()) {
-            String sql = "SELECT movie_id, title FROM colton_movies_data";
+            String sql = "SELECT * FROM colton_movies_data";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 MovieDetails movie = new MovieDetails();
                 movie.setId(rs.getInt("movie_id"));
                 movie.setTitle(rs.getString("title"));
+                movie.setGenre(rs.getString("genre"));
+                movie.setReleaseYear(rs.getInt("release_year"));
+                movie.setRating(rs.getDouble("rating"));
                 movies.add(movie);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return movies;
+    }
+
+    /**
+     * Inserts a new movie into the database.
+     * @return true if insert succeeds, false otherwise
+     */
+    public boolean insertMovie(String title, String genre, int year, double rating) {
+        try (Connection conn = getConnection()) {
+            String sql = "INSERT INTO colton_movies_data (title, genre, release_year, rating) VALUES (?, ?, ?, ?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, title);
+            ps.setString(2, genre);
+            ps.setInt(3, year);
+            ps.setDouble(4, rating);
+            ps.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Updates an existing movie in the database.
+     * @return true if update succeeds, false otherwise
+     */
+    public boolean updateMovie(int id, String title, String genre, int year, double rating) {
+        try (Connection conn = getConnection()) {
+            String sql = "UPDATE colton_movies_data SET title=?, genre=?, release_year=?, rating=? WHERE movie_id=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, title);
+            ps.setString(2, genre);
+            ps.setInt(3, year);
+            ps.setDouble(4, rating);
+            ps.setInt(5, id);
+            ps.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
