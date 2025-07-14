@@ -1,8 +1,8 @@
 /**
  * MovieBean.java
  * Author: Colton Kohler
- * Date: June 22, 2025
- * Assignment: Module 8 - JSP JavaBean Movie App
+ * Date: July 13, 2025
+ * Assignment: Module 9 - JSP JavaBean Movie App
  *
  * This JavaBean class provides methods to connect to a MySQL database,
  * retrieve a list of movies, retrieve full details for a specific movie,
@@ -118,4 +118,22 @@ public class MovieBean {
             return false;
         }
     }
+/**
+ * Deletes a movie by its ID.
+ * @param id The movie_id to delete.
+ * @return true if deleted successfully, false otherwise.
+ */
+public boolean deleteMovie(int id) {
+    try (Connection conn = getConnection()) {
+        String sql = "DELETE FROM colton_movies_data WHERE movie_id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, id);
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected > 0;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
 }
+}
+
